@@ -15,6 +15,8 @@ def Plt_3d_xyz():
     
     ax_xyz = None
     
+    ax_xyz = fig_3d.add_subplot(projection = '3d')
+    
     ax_xyz.set_xlabel("X position (mm)")
     ax_xyz.set_ylabel("Y position (mm)")
     ax_xyz.set_zlabel("Z position (mm)")
