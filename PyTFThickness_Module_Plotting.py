@@ -8,11 +8,38 @@ from numpy import nanmax,isnan
 
 from numpy import min,max
 
+#CREAR UNA FIGURA DEL PLOT 3D SOLITO
+def Plt_3d_xyz():
+    fig_3d = figure("3D Plot")
+    fig_3d.clear()
+    
+    ax_xyz = None
+    
+    ax_xyz.set_xlabel("X position (mm)")
+    ax_xyz.set_ylabel("Y position (mm)")
+    ax_xyz.set_zlabel("Z position (mm)")
+    
+    #sfc_xyz[1]=ax_xyz[1].plot_surface(x,y,z)
+    ax_xyz.set_xlim(0.9*mod_ipr.X_Range[0],1.1*mod_ipr.X_Range[1])
+    ax_xyz.set_ylim(0.9*mod_ipr.Y_Range[0],1.1*mod_ipr.Y_Range[1])
+    ax_xyz.set_zlim(0,1)
+     
+    fig_3d.show()
+    fig_3d.canvas.draw()
+    
+    
+
 def Plt_Mea_Man_Ini(time,theta,vtime,vtheta,xy,x,y,z):
+    
+    #FIGURA SOLO DEL PLOT 3D
+    Plt_3d_xyz()
+    
     fig_mea=figure('Measurement control panel') #plt_fig_mea=plot figure measurements.
     fig_mea.clear()
+    
     n_col,m_col,nd2_col,md2_col=mod_ipr.Plt_N,mod_ipr.Plt_M+1,int((mod_ipr.Plt_N)/2),int((mod_ipr.Plt_M)/2)
     grd=fig_mea.add_gridspec(n_col,m_col,wspace=0.75,hspace=0.75)
+    
     #if get_backend()!='TkAgg': switch_backend('TkAgg') 
     ax_vtim=None #ax_vtim=axes voltage time.
     ax_vtht=None #ax_vtht=axes voltage theta.
@@ -21,13 +48,16 @@ def Plt_Mea_Man_Ini(time,theta,vtime,vtheta,xy,x,y,z):
     lin_vtht_mf=[None,None] #lin_vtht_mf=lines voltage theta measurement fit.
     sfc_xyz=[None,None] #sfc_xy_z=surfaces x y z.
     pnt_pfp=[None,None,None] #pnt_pfp=points past present future.
+    
     ax_vtim=fig_mea.add_subplot(grd[0:nd2_col-1,0:md2_col])
     ax_vtht=fig_mea.add_subplot(grd[nd2_col:n_col,0:md2_col])
     ax_xyz[0]=fig_mea.add_subplot(grd[0:nd2_col,md2_col+1:m_col-1])
     ax_xyz[1]=fig_mea.add_subplot(grd[nd2_col+1:n_col,md2_col+1:m_col-1],projection='3d')
+    
     #Colorbar axis
     ax_cbr=1#fig_mea.add_subplot(grd[n_col,m_col])
-    #Configuring axis for V vs time
+    
+    #00 Configuring axis for V vs time
     ax_vtim.set_xlabel("time (ms)")
     ax_vtim.set_ylabel("Voltage (mV)")
     lin_vtim_om[0],=ax_vtim.plot(time,vtime[0],lw=2.0,ms=3.0,c="blue",label="Offset angle ")
@@ -35,7 +65,8 @@ def Plt_Mea_Man_Ini(time,theta,vtime,vtheta,xy,x,y,z):
     ax_vtim.set_xlim(time[0],time[mod_ipr.Pht_Scns-1])
     ax_vtim.set_ylim(0,1)
     ax_vtim.legend()
-    #Configuring axis for V vs theta
+    
+    #10 Configuring axis for V vs theta
     ax_vtht.set_xlabel("Incident angle (degrees)")
     ax_vtht.set_ylabel("Voltage (mV)")
     lin_vtht_mf[1],=ax_vtht.plot(theta,vtheta[1],lw=3.0,ms=0.0,marker=",",c="green",label="Fited line")
@@ -43,18 +74,21 @@ def Plt_Mea_Man_Ini(time,theta,vtime,vtheta,xy,x,y,z):
     ax_vtht.set_xlim(0.9*mod_ipr.R_Ang_Rng[0],1.1*mod_ipr.R_Ang_Rng[1])
     ax_vtht.set_ylim(0,1)
     ax_vtht.legend()
-    #Configuring axis for XY vs Z
+    
+    #11 Configuring axis for XY vs Z
     ax_xyz[0].set_xlabel("X position (mm)")
     ax_xyz[0].set_ylabel("Y position (mm)")
     pnt_pfp[0],=ax_xyz[0].plot(xy[2],xy[3],c='blue',linestyle='-',marker='o',lw=1.0,ms=3.0)
     pnt_pfp[1],=ax_xyz[0].plot(xy[2],xy[4],c='gray',linestyle='-',marker='o',lw=1.0,ms=3.0)
     pnt_pfp[2],=ax_xyz[0].plot(0,0,c='red',linestyle='-',marker='o',lw=1.0,ms=3.0)
+    
     #pln_xyz[0]=ax_xyz[0].contourf(x,y)
     ax_xyz[0].set_xlim(1.1*mod_ipr.X_Range[0],1.1*mod_ipr.X_Range[1])
     ax_xyz[0].set_ylim(1.1*mod_ipr.Y_Range[0],1.1*mod_ipr.Y_Range[1])
     ax_xyz[1].set_xlabel("X position (mm)")
     ax_xyz[1].set_ylabel("Y position (mm)")
     ax_xyz[1].set_zlabel("Z position (mm)")
+    
     #sfc_xyz[1]=ax_xyz[1].plot_surface(x,y,z)
     ax_xyz[1].set_xlim(0.9*mod_ipr.X_Range[0],1.1*mod_ipr.X_Range[1])
     ax_xyz[1].set_ylim(0.9*mod_ipr.Y_Range[0],1.1*mod_ipr.Y_Range[1])

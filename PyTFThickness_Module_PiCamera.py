@@ -10,6 +10,7 @@ def CamStart():
 	picam2.set_controls({"ExposureTime": 100000, "AnalogueGain": 1.0, "AwbEnable": False})
 	return picam2
 
+
 def Pix_Inten(pico_obj,pico_ord,picam2_obj,cap_lab,cap_fil):
 	R_pico_cmd=pico_ord+"\n"
 	pico_obj.Pico_Write(R_pico_cmd)
@@ -18,13 +19,16 @@ def Pix_Inten(pico_obj,pico_ord,picam2_obj,cap_lab,cap_fil):
 	data16=data8.view(uint16)
 	data16=data16[1000:1800,1400:2100]
 	data16=data16/1024
+    
 	cam_shw=plt.figure("Capture")
 	cam_shw.clear()
 	cam_shw.suptitle(cap_lab,fontsize=10)
+    
 	plt.imshow(data16,cmap="gray",vmin=0,vmax=1)  
 	plt.colorbar()
 	plt_name=cap_fil+".png"    
 	plt.savefig(plt_name)
+    
 	#plt.close()
 	pix_int_rscl=sum(data16)/(800*700)
 	if pico_ord=="D": print("Offset:",pix_int_rscl)
